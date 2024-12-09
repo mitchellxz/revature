@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forms Demo</title>
+  </head>
+  <body>
+    <h3 style="text-align: center">Forms Demo</h3>
+    <form>
+      <label>Enter Name: </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Name"
+        required
+        minlength="5"
+      />
+      <br />
+      <label>Enter Password: </label>
+      <input type="password" id="pass" /> <br />
+      <label>Enter Age: </label>
+      <input type="number" id="age" name="age" /> <br />
+
+      <label>Choose your Gender</label>
+      <input type="radio" name="gender" value="female" checked />female
+      <input type="radio" name="gender" value="male" />Male
+      <br />
+      <label>Choose your hobbies</label>
+      <input type="checkbox" name="hobby" value="Eat" />Eat
+      <input type="checkbox" name="hobby" value="Sleep" checked />Sleep
+      <input type="checkbox" name="hobby" value="Repeat" checked />Repeat
+      <br />
+      <label>Food</label>
+      <select name="food">
+        <option value="Italian">Italian</option>
+        <option value="French">French</option>
+        <option value="Indian">Indian</option>
+      </select>
+      <br />
+      <br />
+      <label>Food</label>
+      <select name="food" multiple>
+        <option value="Italian">Italian</option>
+        <option value="French">French</option>
+        <option value="Indian">Indian</option>
+      </select>
+      <br />
+      <label>Some Comments</label>
+      <textarea rows="5" cols="30"></textarea>
+
+      <input type="submit" value="Submit" />
+    </form>
+
+    <hr />
+    <form>
+      <label>student name: </label>
+      <input type="text" id="name" name="name" placeholder="student name" />
+      <br />
+      <label>Choose your Gender</label>
+      <input type="radio" name="gender" value="female" />female
+      <input type="radio" name="gender" value="male" />Male
+      <br />
+      <label>grade level: </label>
+      <input type="number" id="number" name="grade" required min="1" max="12" />
+      <br />
+      <br />
+      <label>courses taking: </label>
+      <select name="courses" multiple>
+        <option value="math">Math</option>
+        <option value="english">English</option>
+        <option value="science">Science</option>
+        <option value="history">History</option>
+      </select>
+      <br />
+      <label>Additional Comments: </label>
+      <textarea rows="5" cols="30"></textarea>
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
