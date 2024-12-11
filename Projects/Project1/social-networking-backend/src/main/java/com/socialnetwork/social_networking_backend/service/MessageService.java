@@ -1,2 +1,4 @@
-package com.socialnetwork.social_networking_backend.service;public class MessageService {
+package com.socialnetwork.social_networking_backend.service;
+
+public class MessageService {
 }

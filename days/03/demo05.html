@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do list</title>
+  </head>
+  <body>
+    <script>
+      function addItem() {
+        let input = document.getElementById("text1");
+        let value = input.value.trim();
+
+        if (value) {
+          let li = document.createElement("li");
+          li.innerHTML =
+            value +
+            " <button onclick='deleteItem(this)'>Delete</button>" +
+            "<button onclick='completeItem(this)'>Complete</button>";
+
+          document.getElementById("myUL").append(li);
+
+          input.value = "";
+        }
+      }
+
+      function deleteItem(item) {
+        let li = item.parentElement;
+        li.remove();
+      }
+
+      function completeItem(item) {
+        let li = item.parentElement;
+        console.log(li);
+
+        let childNodes = li.childNodes;
+        console.log(childNodes);
+
+        let text = childNodes[0];
+        console.log(text);
+
+        li.innerHTML = `<strike>${text.textContent}</strike>`;
+      }
+    </script>
+    <h1>To do list</h1>
+    <input type="text" id="text1" />
+    <button onclick="addItem()">Add to list</button>
+    <hr />
+
+    <ul id="myUL">
+      <li>
+        pay bills <button onclick="deleteItem(this)">Delete</button>
+        <button onclick="completeItem(this)">Complete</button>
+      </li>
+    </ul>
+  </body>
+</html>
+
+<!-- add elements to the list -->
+
+<!-- create a to do list application in js-->
+<!--following features: add item to list, delete item from list, able to mark item as complete, edit item (optional)-->
