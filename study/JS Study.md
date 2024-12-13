@@ -31,3 +31,5 @@
 2. Writing into the HTML output, using `docment.write()`
 3. Writing into an alert box, using `window.alert()`
 4. Writing into the browser console, using `console.log()`
+
+URL(https://www.w3schools.com/js/js_output.asp)
