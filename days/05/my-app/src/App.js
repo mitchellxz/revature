@@ -10,13 +10,18 @@ import AxiosPostDemo from './axiosdemos/AxiosPostDemo';
 import AxiosPutDemo from './axiosdemos/AxiosPutDemo';
 import AxiosPatchDemo from './axiosdemos/AxiosPatchDemo';
 import AxiosDeleteDemo from './axiosdemos/AxiosDeleteDemo';
+import TextBoxComponent from './TextBoxComponent';
+import ButtonComponent from './ButtonComponent';
+import MyContext from './contextDemo/MyContext';
 
 
 function App() {
   
   const comments = ["Comment one", "Comment two", "Comment three"];
+  const sharedData = 'shared data';
 
   return (
+    <MyContext.Provider value={sharedData}>
    <Router>
     <div className="app">
       <Navbar />
@@ -31,9 +36,12 @@ function App() {
       <Route path='/patchpost' element={<AxiosPatchDemo />} />
       <Route path='/deletepost' element={<AxiosDeleteDemo />} />
     </Routes>
+    <ButtonComponent />
     <br/> <hr />
-    <ToDoList />
+    <TextBoxComponent />
+    <br />
    </Router>
+   </MyContext.Provider>
 
   );
 }
