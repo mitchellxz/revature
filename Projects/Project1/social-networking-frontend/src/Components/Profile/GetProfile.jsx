@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import GetFollowingProfiles from "./GetFollowingProfiles";
+import GetFollowingProfiles from "../Following/GetFollowingProfiles";
 import CardProfileComponent from "./CardProfileComponent";
+import CardMutualComponent from "./CardMutualComponent";
 
 function GetProfile({ username }) {
   const [profile, setProfile] = useState(null);
@@ -35,6 +36,7 @@ function GetProfile({ username }) {
         location={profile.location}
       />
       <GetFollowingProfiles />
+      <CardMutualComponent followedProfiles={profile.followings} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 package com.socialnetwork.social_networking_backend.repository;
 
+import com.socialnetwork.social_networking_backend.model.Following;
 import com.socialnetwork.social_networking_backend.model.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,10 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
             "on following.followed_profile_id = profile.profile_id\n" +
             "where following.follower_profile_id = :followerProfileId;", nativeQuery = true)
     List<Profile> findFollowedProfiles(@Param("followerProfileId") Long followerProfileId);
+
+    @Query(value = "select * from profile\n" +
+            "join following\n" +
+            "on profile.profile_id = following.followed_profile_id\n" +
+            "where following.follower_id = :followerId and following.is_mutual = true;", nativeQuery = true)
+    Profile findProfileByFollowerId(@Param("followerId") Long followerId);
 }

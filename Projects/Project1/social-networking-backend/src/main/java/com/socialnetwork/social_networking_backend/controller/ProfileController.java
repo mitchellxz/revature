@@ -1,5 +1,6 @@
 package com.socialnetwork.social_networking_backend.controller;
 
+import com.socialnetwork.social_networking_backend.model.Following;
 import com.socialnetwork.social_networking_backend.model.Profile;
 import com.socialnetwork.social_networking_backend.service.ProfileService;
 import org.springframework.http.HttpStatus;
@@ -56,6 +57,12 @@ public class ProfileController {
     @GetMapping("following/{followerProfileId}")
     public ResponseEntity<List<Profile>> getFollowedProfiles(@PathVariable Long followerProfileId) {
         return ResponseEntity.ok(profileService.getFollowedProfiles(followerProfileId));
+    }
+
+    @GetMapping("following/mutual/{followerId}")
+    public ResponseEntity<Profile> getProfileByFollowerId(@PathVariable Long followerId) {
+        Profile profile = profileService.getProfileByFollowerId(followerId);
+        return ResponseEntity.ok(profile);
     }
 
 }

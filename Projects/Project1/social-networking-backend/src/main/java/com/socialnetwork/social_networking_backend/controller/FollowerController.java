@@ -30,10 +30,16 @@ public class FollowerController {
         return ResponseEntity.ok("Profile followed.");
     }
 
-    @DeleteMapping("/{followerProfileId}")
-    public ResponseEntity<String> unfollowProfile(@PathVariable Long followerProfileId, @RequestParam Long followedProfileId) {
+    @DeleteMapping("/{followerProfileId}/unfollow/{followedProfileId}")
+    public ResponseEntity<String> unfollowProfile(@PathVariable Long followerProfileId, @PathVariable Long followedProfileId) {
         followerService.unfollowProfile(followerProfileId, followedProfileId);
         return ResponseEntity.ok("unfollowed.");
     }
+
+    @GetMapping("/{followerId}")
+    public Following getFollowerById(@PathVariable Long followerId) {
+        return followerService.getByFollowerId(followerId);
+    }
+
 
 }

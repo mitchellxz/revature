@@ -50,6 +50,7 @@ public class FollowerService {
        newFollowing.setFollowerProfile(followerProfile);
        newFollowing.setFollowedProfile(followedProfile);
 
+       // if both users are following each other
        if (reverseFollow.isPresent()) {
            newFollowing.setMutual(true);
            reverseFollow.get().setMutual(true);
@@ -72,4 +73,13 @@ public class FollowerService {
 
         followerRepository.delete(existingFollowing);
     }
+
+    public Following getByFollowerId(Long followerId) {
+        Optional<Following> optionalFollowing = followerRepository.findById(followerId);
+        if (optionalFollowing.isEmpty()) {
+            throw new IllegalArgumentException("No profile to display.");
+        }
+        return optionalFollowing.get();
+    }
+
 }

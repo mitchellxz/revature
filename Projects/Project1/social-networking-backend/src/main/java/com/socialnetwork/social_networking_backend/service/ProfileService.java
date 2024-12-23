@@ -72,4 +72,8 @@ public class ProfileService {
     public List<Profile> getFollowedProfiles(Long followerProfileId) {
         return profileRepository.findFollowedProfiles(followerProfileId);
     }
+
+    public Profile getProfileByFollowerId(Long followerId) {
+        return profileRepository.findProfileByFollowerId(followerId);
+    }
 }

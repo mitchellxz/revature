@@ -31,10 +31,11 @@ function GetPosts({ profileId }) {
           <div key={post.id}>
             <CardPostComponent
               name={post.profileFullName}
-              postTitle={post.title}
+              postTitle={post.content}
               messages={post.messages}
               postDate={post.createdAt}
               likes={post.likes.length}
+              postId={post.id}
             />
           </div>
         ))}
