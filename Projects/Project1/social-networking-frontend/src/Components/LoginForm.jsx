@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function RegistrationForm() {
+function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -9,30 +9,37 @@ function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const registrationData = {
+    const loginData = {
       username: username,
       password: password,
     };
 
     try {
-      const response = await fetch("http://localhost:8080/register", {
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(registrationData),
+        body: JSON.stringify(loginData),
       });
       if (!response.ok) {
         const errorMessage = await response.text();
         alert(errorMessage);
       } else {
-        setUsername("");
-        setPassword("");
-        alert("Successfully registered.");
-        navigate("/login");
+        const data = await response.json();
+        console.log(data);
+
+        // very basic authentication
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("password", password);
+
+        alert("Login successful");
+
+        navigate("/user/home");
+        //navigate(`/profile/user/${username}`);
       }
     } catch (error) {
-      console.error("Error registrating: ", error);
+      console.error("Error logging in ", error);
     }
   };
 
@@ -57,10 +64,10 @@ function RegistrationForm() {
         />
       </div>
       <div>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </div>
     </form>
   );
 }
 
-export default RegistrationForm;
+export default LoginForm;

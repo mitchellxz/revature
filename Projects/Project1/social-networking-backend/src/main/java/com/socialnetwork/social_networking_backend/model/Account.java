@@ -1,22 +1,34 @@
 package com.socialnetwork.social_networking_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
 public class Account {
 
-    @Column(name = "accountId")
+    @Column(name = "account_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long accountId;
+    private Long id;
 
     @Column(nullable = false, unique = true, length=50)
     private String username;
 
-
     @Column(nullable = false)
     private String password;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private Profile profile;
 
     public Account() {
 
@@ -27,18 +39,18 @@ public class Account {
         this.password = password;
     }
 
-    public Account(Long accountId, String username, String password) {
-        this.accountId = accountId;
+    public Account(Long id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public Long getAccountId() {
-        return accountId;
+    public Long getId() {
+        return id;
     }
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -55,5 +67,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }
