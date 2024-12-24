@@ -45,9 +45,6 @@ public class ProfileController {
     - Bio
     - Profile Picture
     - Location
-
-
-    so far returns the profile - might need to change it so that it returns an http response
      */
     @PatchMapping("/{accountId}/edit")
     public Profile editProfile(@PathVariable Long accountId, @RequestBody Profile profileUpdates) {

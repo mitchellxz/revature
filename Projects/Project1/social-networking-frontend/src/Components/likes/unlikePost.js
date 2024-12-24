@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function likePost(postId) {
+async function unlikePost(postId) {
     const profileId = sessionStorage.getItem("profile_id");
     const url = `http://localhost:8080/likes/${postId}/${profileId}`;
     const config = {
@@ -18,4 +18,4 @@ async function likePost(postId) {
     }
 }
 
-export default likePost;
+export default unlikePost;

@@ -1,9 +1,9 @@
 import Card from "react-bootstrap/Card";
 import placeholder from "./placeholder_2.jpg";
-import PostCommentForm from "./PostCommentForm";
+import PostCommentForm from "../comments/PostCommentForm";
 import Button from "react-bootstrap/Button";
-import likePost from "./likePost";
-import unlikePost from "./unlikePost";
+import likePost from "../likes/likePost";
+import unlikePost from "../likes/unlikePost";
 
 function CardPostComponent({
   name,

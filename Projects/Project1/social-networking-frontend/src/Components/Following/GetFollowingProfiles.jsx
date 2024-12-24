@@ -1,24 +1,19 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import CardFollowingComponent from "./CardFollowingComponent";
+import followingProfiles from "./followingProfiles";
 
 function GetFollowingProfiles() {
-  const profileId = sessionStorage.getItem("profile_id");
   const [followedProfiles, setFollowedProfiles] = useState([]);
   useEffect(() => {
     async function getFollowingProfiles() {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/profile/following/${profileId}`
-        );
-        setFollowedProfiles(response.data);
+        const profiles = await followingProfiles();
+        setFollowedProfiles(profiles || []);
       } catch (error) {
-        console.error("Error fetching following profile: ", error);
+        console.error("Error fetching following profiles: ", error);
       }
     }
-    if (followedProfiles) {
-      getFollowingProfiles();
-    }
+    getFollowingProfiles();
   }, []);
 
   return (

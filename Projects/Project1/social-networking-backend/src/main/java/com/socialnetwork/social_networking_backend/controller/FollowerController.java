@@ -23,8 +23,8 @@ public class FollowerController {
         return followerService.getFollowersByProfileId(profileId);
     }
 
-    @PostMapping("/{followerProfileId}")
-    public ResponseEntity<String> followProfile(@PathVariable Long followerProfileId, @RequestParam Long followedProfileId) {
+    @PostMapping("/{followerProfileId}/follow/{followedProfileId}")
+    public ResponseEntity<String> followProfile(@PathVariable Long followerProfileId, @PathVariable Long followedProfileId) {
         System.out.println(followerProfileId + " " + followedProfileId);
         followerService.followProfile(followerProfileId, followedProfileId);
         return ResponseEntity.ok("Profile followed.");
