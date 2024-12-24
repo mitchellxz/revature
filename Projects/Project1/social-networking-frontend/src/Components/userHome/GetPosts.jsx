@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CardPostComponent from "./CardPostComponent";
+import GetAllProfiles from "../Profile/GetAllProfiles";
 
 function GetPosts({ profileId }) {
   const [posts, setPosts] = useState(null);
@@ -25,7 +26,10 @@ function GetPosts({ profileId }) {
 
   return (
     <div>
-      <h2>Posts</h2>
+      <div className="search-div">
+        <h3>Search</h3>
+        <GetAllProfiles />
+      </div>
       <ul>
         {posts.map((post) => (
           <div key={post.id}>

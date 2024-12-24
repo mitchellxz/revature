@@ -24,7 +24,7 @@ function PostCommentForm({ postId }) {
           onChange={(e) => setComment(e.target.value)}
         />
       </Form.Group>
-      <Button variant="dark" type="submit">
+      <Button className="reply-button" variant="dark" type="submit">
         Reply
       </Button>
     </Form>

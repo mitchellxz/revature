@@ -10,13 +10,21 @@ import ViewEditProfile from "./Components/Profile/ViewEditProfile";
 import NavbarComponent from "./Components/NavbarComponent";
 import UserHomeView from "./Components/userHome/UserHomeView";
 import CreatePost from "./Components/userHome/CreatePost";
+import { useEffect, useState } from "react";
 
 function App() {
-  const username = sessionStorage.getItem("username");
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const storedUsername = sessionStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   return (
     <BrowserRouter>
-      {username && <NavbarComponent username={username} />}
+      <NavbarComponent username={username} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
