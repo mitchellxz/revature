@@ -1,4 +1,4 @@
-import ProfileForm from "../ProfileForm";
+import ProfileForm from "./ProfileForm";
 import Button from "react-bootstrap/Button";
 
 function ViewEditProfile() {

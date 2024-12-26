@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import editProfile from "./Profile/editProfile";
+import editProfile from "./editProfile";
 import { useState } from "react";
 
 const ProfileForm = () => {

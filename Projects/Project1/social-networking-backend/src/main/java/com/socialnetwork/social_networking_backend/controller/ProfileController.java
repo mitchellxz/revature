@@ -36,6 +36,7 @@ public class ProfileController {
 
     @GetMapping("/user/{username}")
     public Profile getProfileByUsername(@PathVariable String username) {
+        System.out.println("Fetching profile for username: " + username);
         return profileService.getProfileByUsername(username);
     }
 

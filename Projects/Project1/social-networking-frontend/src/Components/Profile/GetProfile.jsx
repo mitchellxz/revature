@@ -11,7 +11,8 @@ function GetProfile({ username }) {
     async function getProfile() {
       try {
         const response = await axios.get(
-          `http://localhost:8080/profile/user/${username}`
+          `http://localhost:8080/profile/user/${username}`,
+          { withCredentials: true }
         );
         setProfile(response.data);
 

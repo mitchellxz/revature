@@ -4,6 +4,7 @@ import com.socialnetwork.social_networking_backend.model.Account;
 import com.socialnetwork.social_networking_backend.model.Profile;
 import com.socialnetwork.social_networking_backend.service.AccountService;
 import com.socialnetwork.social_networking_backend.service.ProfileService;
+import jakarta.servlet.http.HttpSession;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-public class AccountController {
+public class AccountController extends BaseController{
     private final AccountService accountService;
     private final ProfileService profileService;
 
@@ -45,11 +47,17 @@ public class AccountController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<UserDetails> loginUser(@RequestBody Account account) {
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Account account, HttpSession session) {
         UserDetails userDetails = accountService.loadUserByUsername(account.getUsername());
 
         if (passwordEncoder.matches(account.getPassword(), userDetails.getPassword())) {
-            return ResponseEntity.ok(userDetails);
+            session.setAttribute("username", account.getUsername());
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Login successsful");
+            response.put("username", account.getUsername());
+
+            return ResponseEntity.ok(response);
         }
         else {
             throw new IllegalArgumentException("Invalid Credentials");
@@ -57,8 +65,32 @@ public class AccountController {
     }
 
     @GetMapping("/all")
-    public List<Account> getAllAccounts() {
-        return accountService.getAllAccounts();
+    public ResponseEntity<Object> getAllAccounts() {
+        if(!isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+        }
+        List<Account> accounts = accountService.getAllAccounts();
+        return ResponseEntity.ok(accounts);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutAccount(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok("Logged out successfully.");
+    }
+
+    @GetMapping("/currentuser")
+    public ResponseEntity<Map<String, String>> getCurrentUser(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+
+        if (username != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("username", username);
+            return ResponseEntity.ok(response);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
 }

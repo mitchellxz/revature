@@ -8,7 +8,8 @@ async function getProfileId() {
     const username = sessionStorage.getItem("username");
     try {
         const response = await axios.get(
-            `http://localhost:8080/profile/user/${username}`
+            `http://localhost:8080/profile/user/${username}`,
+            { withCredentials: true }
         );
         sessionStorage.setItem("profile_id", response.data.id);
     } catch (error) {

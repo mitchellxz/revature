@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CardPostComponent from "./CardPostComponent";
-import GetAllProfiles from "../Profile/GetAllProfiles";
-import GetUserPosts from "./GetUserPosts";
 
-function GetPosts({ profileId }) {
+function GetUserPosts() {
+  const profileId = sessionStorage.getItem("profile_id");
   const [posts, setPosts] = useState(null);
-  const url = `http://localhost:8080/post/following/${profileId}`;
-  const config = { "Content-Type": "application/json" };
+  const url = `http://localhost:8080/post/${profileId}/all`;
+  const config = {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
   useEffect(() => {
     async function getPosts() {
@@ -27,10 +31,6 @@ function GetPosts({ profileId }) {
 
   return (
     <div>
-      <div className="search-div">
-        <h3>Search</h3>
-        <GetAllProfiles />
-      </div>
       <ul>
         {posts.map((post) => (
           <div key={post.id}>
@@ -45,9 +45,8 @@ function GetPosts({ profileId }) {
           </div>
         ))}
       </ul>
-      <GetUserPosts />
     </div>
   );
 }
 
-export default GetPosts;
+export default GetUserPosts;

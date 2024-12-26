@@ -21,6 +21,7 @@ function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
+        credentials: "include",
       });
       if (!response.ok) {
         const errorMessage = await response.text();
