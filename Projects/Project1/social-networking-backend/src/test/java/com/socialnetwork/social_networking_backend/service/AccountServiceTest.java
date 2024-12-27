@@ -1,123 +1,109 @@
 package com.socialnetwork.social_networking_backend.service;
 
-import com.socialnetwork.social_networking_backend.controller.AccountController;
 import com.socialnetwork.social_networking_backend.model.Account;
 import com.socialnetwork.social_networking_backend.repository.AccountRepository;
-import org.hibernate.dialect.function.array.ArrayContainsUnnestFunction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AccountServiceTest {
+public class AccountServiceTest {
 
-    private AccountRepository accountRepository;
+    @InjectMocks
     private AccountService accountService;
-    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AccountRepository accountRepository;
 
     @BeforeEach
-    void SetUp() {
-        accountRepository = mock(AccountRepository.class);
-        passwordEncoder = mock(PasswordEncoder.class);
-        accountService = new AccountService(accountRepository);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void createAccountSuccess() {
-        Account account = new Account("testuser", "password123");
+    void createAccount_ValidAccount_ReturnsSavedAccount() {
+        Account account = new Account(null, "testuser", "password");
         when(accountRepository.existsByUsername("testuser")).thenReturn(false);
-        when(accountRepository.save(account)).thenReturn(account);
+        when(accountRepository.save(account)).thenReturn(new Account(1L, "testuser", "password"));
 
-        Account savedAccount = accountService.createAccount(account);
+        Account result = accountService.createAccount(account);
 
-        assertNotNull(savedAccount, "saved account should not be null");
-        assertEquals("testuser", savedAccount.getUsername(), "Username should match the input");
-        assertEquals("password123", savedAccount.getPassword(), "Password should match the input");
-
+        assertNotNull(result);
+        assertEquals("testuser", result.getUsername());
         verify(accountRepository, times(1)).existsByUsername("testuser");
         verify(accountRepository, times(1)).save(account);
     }
 
     @Test
-    void createAccountUserExists() {
-        Account account = new Account("testuser", "test");
+    void createAccount_UsernameExists_ThrowsException() {
+        Account account = new Account(null, "testuser", "password");
         when(accountRepository.existsByUsername("testuser")).thenReturn(true);
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> accountService.createAccount(account),
-                "Expected an IllegalArgumentException to be thrown"
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.createAccount(account);
+        });
+        assertEquals("Username already exists.", exception.getMessage());
+        verify(accountRepository, times(1)).existsByUsername("testuser");
+        verify(accountRepository, times(0)).save(account);
+    }
+
+    @Test
+    void createAccount_InvalidPassword_ThrowsException() {
+        Account account = new Account(null, "testuser", "123");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.createAccount(account);
+        });
+        assertEquals("Invalid password.", exception.getMessage());
+        verify(accountRepository, times(0)).save(account);
+    }
+
+    @Test
+    void loadUserByUsername_ValidUsername_ReturnsUserDetails() {
+        Account account = new Account(1L, "testuser", "password");
+        when(accountRepository.findByUsername("testuser")).thenReturn(Optional.of(account));
+
+        UserDetails userDetails = accountService.loadUserByUsername("testuser");
+
+        assertNotNull(userDetails);
+        assertEquals("testuser", userDetails.getUsername());
+        verify(accountRepository, times(1)).findByUsername("testuser");
+    }
+
+    @Test
+    void loadUserByUsername_InvalidUsername_ThrowsException() {
+        when(accountRepository.findByUsername("nonexistentuser")).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.loadUserByUsername("nonexistentuser");
+        });
+        assertEquals("Invalid Credentials.", exception.getMessage());
+        verify(accountRepository, times(1)).findByUsername("nonexistentuser");
+    }
+
+    @Test
+    void getAllAccounts_ReturnsListOfAccounts() {
+        List<Account> accounts = Arrays.asList(
+                new Account(1L, "user1", "password1"),
+                new Account(2L, "user2", "password2")
         );
-        assertEquals("Username already exists.", exception.getMessage(), "Exception message should match.");
+        when(accountRepository.findAll()).thenReturn(accounts);
+
+        List<Account> result = accountService.getAllAccounts();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("user1", result.get(0).getUsername());
+        assertEquals("user2", result.get(1).getUsername());
+        verify(accountRepository, times(1)).findAll();
     }
-
-    @Test
-    void createAccountUsernameBlank() {
-        Account account = new Account("", "test");
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> accountService.createAccount(account),
-                "Expected an IllegalArgumentException to be thrown"
-        );
-        assertEquals("Username cannot be blank.", exception.getMessage(), "Exception message should match.");
-    }
-
-    @Test
-    void createAccountPasswordBlank() {
-        Account account = new Account("testuser", "");
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> accountService.createAccount(account),
-                "Expected an IllegalArgumentException to be thrown"
-        );
-        assertEquals("Invalid password.", exception.getMessage(), "Exception message should match.");
-
-    }
-
-    @Test
-    void createAccountPasswordShort() {
-        Account account = new Account("testuser", "123");
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> accountService.createAccount(account),
-                "Expected an IllegalArgumentException to be thrown"
-        );
-        assertEquals("Invalid password.", exception.getMessage(), "Exception message should match.");
-    }
-
-
-    @Test
-    void loginUsernameBlank() {
-    }
-
-    @Test
-    void loginUsernameWrong() {
-    }
-
-    @Test
-    void loginPasswordBlank() {
-    }
-
-    @Test
-    void loginPasswordWrong() {
-    }
-
-    @Test
-    void loginUsernamePasswordWrong() {
-
-    }
-
 }

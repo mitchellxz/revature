@@ -1,6 +1,5 @@
 package com.socialnetwork.social_networking_backend.service;
 
-import com.socialnetwork.social_networking_backend.controller.ProfileController;
 import com.socialnetwork.social_networking_backend.model.Profile;
 import com.socialnetwork.social_networking_backend.repository.ProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,14 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ProfileControllerTest {
+public class ProfileServiceTest {
 
     @Mock
     private ProfileRepository profileRepository;

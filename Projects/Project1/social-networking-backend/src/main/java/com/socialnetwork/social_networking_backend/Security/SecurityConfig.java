@@ -58,7 +58,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/**").permitAll();
                     registry.anyRequest().authenticated();
